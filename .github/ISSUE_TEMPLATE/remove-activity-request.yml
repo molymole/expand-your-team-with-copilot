@@ -1,0 +1,61 @@
+name: Remove or archive an activity
+description: Request removal or archival of an activity that should no longer be available.
+title: "[Teacher Request] Remove activity: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when an activity should be removed or hidden from new signups.
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem description
+      description: Why should this activity be removed or archived?
+      placeholder: The activity is no longer offered this year and should not accept new registrations.
+    validations:
+      required: true
+  - type: input
+    id: activity-name
+    attributes:
+      label: Activity to remove or archive
+      placeholder: Weekend Robotics Workshop
+    validations:
+      required: true
+  - type: dropdown
+    id: removal-type
+    attributes:
+      label: Requested action
+      options:
+        - Remove activity entirely
+        - Keep activity data but prevent new registrations
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: List exact expected system behavior after the change.
+      placeholder: |
+        - Activity is no longer shown in active listings
+        - No new students can register for this activity
+        - Existing records are handled according to school policy
+    validations:
+      required: true
+  - type: textarea
+    id: hints
+    attributes:
+      label: Hints, tips, or suggested implementation
+      description: Mention any preferred approach or existing examples.
+      placeholder: Follow the same behavior used for retired activities, if one already exists.
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations and related context
+      description: Include policy constraints, legal requirements, and related issue links.
+      placeholder: Retain historical registration data for reporting.
+    validations:
+      required: true

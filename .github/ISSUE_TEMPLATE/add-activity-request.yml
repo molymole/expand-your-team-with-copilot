@@ -1,0 +1,64 @@
+name: Add a new activity
+description: Request a brand-new extracurricular activity to be added to the app.
+title: "[Teacher Request] Add activity: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please complete every required field so Copilot cloud agent can work this request without follow-up questions.
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem description
+      description: What need is currently not being met?
+      placeholder: Students need a beginner-friendly coding club, but none is currently available.
+    validations:
+      required: true
+  - type: input
+    id: activity-name
+    attributes:
+      label: New activity name
+      placeholder: Intro to Coding Club
+    validations:
+      required: true
+  - type: textarea
+    id: activity-details
+    attributes:
+      label: Requested activity details
+      description: Include schedule, description, and maximum participants.
+      placeholder: |
+        Description: Introductory programming lessons and projects.
+        Days: Tuesday and Thursday
+        Time: 3:30 PM - 4:30 PM
+        Max participants: 20
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: List clear outcomes that must be true when this is complete.
+      placeholder: |
+        - Activity appears in the activity list as "Intro to Coding Club"
+        - Description and schedule match the requested details
+        - Max participants is set to 20
+    validations:
+      required: true
+  - type: textarea
+    id: hints
+    attributes:
+      label: Hints, tips, or suggested implementation
+      description: Share known file names, examples to copy, or preferred approach.
+      placeholder: Use existing activity seed data as a pattern in src/backend/database.py.
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations and related context
+      description: Include constraints, dependencies, deadlines, or related issues.
+      placeholder: Must be visible before next semester planning meeting on June 10.
+    validations:
+      required: true
