@@ -1,0 +1,62 @@
+name: Update an existing activity
+description: Request changes to details for an activity that already exists.
+title: "[Teacher Request] Update activity: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for updates to name, description, schedule, or capacity of an existing activity.
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: Problem description
+      description: What is wrong or outdated in the current activity setup?
+      placeholder: The Robotics Club schedule shown in the app is outdated and conflicts with exams.
+    validations:
+      required: true
+  - type: input
+    id: activity-name
+    attributes:
+      label: Activity to update
+      placeholder: Robotics Club
+    validations:
+      required: true
+  - type: textarea
+    id: requested-changes
+    attributes:
+      label: Exact requested changes
+      description: Specify old value and new value for each field that must change.
+      placeholder: |
+        - Schedule: Fridays 3:30 PM - 5:30 PM -> Wednesdays 3:30 PM - 5:00 PM
+        - Max participants: 12 -> 15
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: What must be true after the update is complete?
+      placeholder: |
+        - Robotics Club now shows Wednesday schedule in the UI/API
+        - Capacity is updated to 15
+        - Existing student registrations remain unchanged
+    validations:
+      required: true
+  - type: textarea
+    id: hints
+    attributes:
+      label: Hints, tips, or suggested implementation
+      description: Share where related code or data is likely located.
+      placeholder: Mirror the data structure used by other activities in src/backend/database.py.
+    validations:
+      required: true
+  - type: textarea
+    id: limitations
+    attributes:
+      label: Limitations and related context
+      description: Include constraints, dependencies, and anything Copilot should avoid changing.
+      placeholder: Keep all existing participant emails for this activity.
+    validations:
+      required: true
