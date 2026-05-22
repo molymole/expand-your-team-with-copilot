@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("activity-search");
   const searchButton = document.getElementById("search-button");
   const categoryFilters = document.querySelectorAll(".category-filter");
+  const groupBySelect = document.getElementById("group-by");
   const difficultyFilters = document.querySelectorAll(".difficulty-filter");
   const dayFilters = document.querySelectorAll(".day-filter");
   const timeFilters = document.querySelectorAll(".time-filter");
@@ -42,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentFilter = "all";
   let searchQuery = "";
   let currentDifficulty = "";
+  let currentGroupBy = groupBySelect ? groupBySelect.value : "";
   let currentDay = "";
   let currentTimeRange = "";
   let currentView = "cards";
@@ -446,6 +448,7 @@ document.addEventListener("DOMContentLoaded", () => {
     activitiesList.innerHTML = "";
     calendarView.innerHTML = "";
 
+
     // Apply client-side filtering - this handles category filter and search, plus weekend filter
     let filteredActivities = {};
 
@@ -540,6 +543,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let minStart = 24 * 60;
     let maxEnd = 0;
+
 
     Object.entries(filteredActivities).forEach(([name, details]) => {
       if (!details.schedule_details) {
@@ -710,7 +714,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Function to render a single activity card
-  function renderActivityCard(name, details) {
+  function renderActivityCard(name, details, targetContainer = activitiesList) {
     const activityCard = document.createElement("div");
     activityCard.className = "activity-card";
 
@@ -829,7 +833,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    activitiesList.appendChild(activityCard);
+    targetContainer.appendChild(activityCard);
   }
 
   // Event listeners for search and filter
@@ -867,6 +871,13 @@ document.addEventListener("DOMContentLoaded", () => {
       displayFilteredActivities();
     });
   });
+
+  if (groupBySelect) {
+    groupBySelect.addEventListener("change", (event) => {
+      currentGroupBy = event.target.value;
+      displayFilteredActivities();
+    });
+  }
 
   // Add event listeners to difficulty filter buttons
   difficultyFilters.forEach((button) => {
@@ -1131,4 +1142,31 @@ document.addEventListener("DOMContentLoaded", () => {
   checkAuthentication();
   initializeFilters();
   fetchActivities();
+
+  // Dark mode toggle
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const themeIcon = darkModeToggle.querySelector(".theme-icon");
+  const themeLabel = darkModeToggle.querySelector("span:last-child");
+
+  function applyTheme(isDark) {
+    if (isDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+      themeIcon.textContent = "☀️";
+      themeLabel.textContent = "Light Mode";
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+      themeIcon.textContent = "🌙";
+      themeLabel.textContent = "Dark Mode";
+    }
+  }
+
+  // Restore saved preference
+  const savedTheme = localStorage.getItem("theme");
+  applyTheme(savedTheme === "dark");
+
+  darkModeToggle.addEventListener("click", () => {
+    const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+    applyTheme(!isDark);
+    localStorage.setItem("theme", !isDark ? "dark" : "light");
+  });
 });
