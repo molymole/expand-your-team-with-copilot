@@ -337,6 +337,66 @@ document.addEventListener("DOMContentLoaded", () => {
       .replaceAll("'", "&#39;");
   }
 
+  function getActivityShareData(name, details) {
+    const scheduleText = formatSchedule(details);
+    const shareUrl = `${window.location.origin}${window.location.pathname}?activity=${encodeURIComponent(name)}`;
+    const shareText = `Check out "${name}" at Mergington High School: ${scheduleText}.`;
+
+    return {
+      title: `Join me for ${name}!`,
+      text: shareText,
+      url: shareUrl,
+    };
+  }
+
+  function getXShareUrl(shareData) {
+    return `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodeURIComponent(shareData.url)}`;
+  }
+
+  function getEmailShareUrl(shareData) {
+    return `mailto:?subject=${encodeURIComponent(shareData.title)}&body=${encodeURIComponent(`${shareData.text}\n\n${shareData.url}`)}`;
+  }
+
+  async function copyTextToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+
+    const tempInput = document.createElement("textarea");
+    tempInput.value = text;
+    tempInput.style.position = "fixed";
+    tempInput.style.opacity = "0";
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+  }
+
+  async function handleQuickShare(event) {
+    const shareButton = event.currentTarget;
+    const shareTitle = shareButton.dataset.shareTitle;
+    const shareText = shareButton.dataset.shareText;
+    const shareUrl = shareButton.dataset.shareUrl;
+
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: shareTitle,
+          text: shareText,
+          url: shareUrl,
+        });
+      } else {
+        await copyTextToClipboard(`${shareText}\n${shareUrl}`);
+        showMessage("Activity link copied. Share it with your friends!", "success");
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        showMessage("Sharing failed. Please try again.", "error");
+      }
+    }
+  }
+
   // Function to determine activity type (this would ideally come from backend)
   function getActivityType(activityName, description) {
     const name = activityName.toLowerCase();
@@ -739,6 +799,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Format the schedule using the new helper function
     const formattedSchedule = formatSchedule(details);
+    const shareData = getActivityShareData(name, details);
+    const xShareUrl = getXShareUrl(shareData);
+    const emailShareUrl = getEmailShareUrl(shareData);
     const difficulty = details.difficulty;
     const difficultyHtml = difficulty
       ? `<p><strong>Difficulty:</strong> ${difficulty}</p>`
@@ -815,6 +878,28 @@ document.addEventListener("DOMContentLoaded", () => {
         `
         }
       </div>
+      <div class="share-actions">
+        <button
+          class="share-button quick-share-button"
+          type="button"
+          data-share-title="${escapeHtml(shareData.title)}"
+          data-share-text="${escapeHtml(shareData.text)}"
+          data-share-url="${escapeHtml(shareData.url)}"
+        >
+          Share
+        </button>
+        <a
+          class="share-button external-share-button"
+          href="${xShareUrl}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Share on X
+        </a>
+        <a class="share-button external-share-button" href="${emailShareUrl}">
+          Email
+        </a>
+      </div>
     `;
 
     // Add click handlers for delete buttons
@@ -832,6 +917,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    const quickShareButton = activityCard.querySelector(".quick-share-button");
+    quickShareButton.addEventListener("click", handleQuickShare);
 
     targetContainer.appendChild(activityCard);
   }
