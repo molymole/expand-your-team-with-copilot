@@ -179,6 +179,29 @@ section h3 {
 
 .activities-content {
   flex: 1;
+  min-width: 0;
+}
+
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.view-toggle-button {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 18px;
+  padding: 5px 12px;
+  font-size: 0.75rem;
+}
+
+.view-toggle-button.active {
+  background-color: var(--primary);
+  color: #fff;
+  border-color: var(--primary-dark);
 }
 
 /* Desktop layout */
@@ -206,6 +229,102 @@ section h3 {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 15px;
   width: 100%;
+}
+
+#calendar-view {
+  width: 100%;
+}
+
+.calendar-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background-color: var(--surface);
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 72px repeat(7, minmax(120px, 1fr));
+  min-width: 860px;
+  border-collapse: collapse;
+}
+
+.calendar-time-header,
+.calendar-day-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background-color: var(--border-light);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 6px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calendar-time-column {
+  position: relative;
+  height: var(--calendar-height);
+  border-right: 1px solid var(--border);
+}
+
+.calendar-time-label {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  padding-right: 6px;
+  text-align: right;
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+}
+
+.calendar-day-column {
+  border-right: 1px solid var(--border-light);
+}
+
+.calendar-day-column:last-child {
+  border-right: none;
+}
+
+.calendar-day-track {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent calc(var(--hour-height) - 1px),
+    var(--border-light) calc(var(--hour-height) - 1px),
+    var(--border-light) var(--hour-height)
+  );
+}
+
+.calendar-entry {
+  position: absolute;
+  border: 1px solid var(--primary-dark);
+  border-radius: 4px;
+  background: rgba(124, 207, 62, 0.18);
+  color: var(--text-primary);
+  padding: 3px 4px;
+  font-size: 0.68rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow: hidden;
+  cursor: default;
+}
+
+.calendar-entry-name {
+  font-weight: 700;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-entry-enrollment {
+  opacity: 0.85;
 }
 
 .activity-card {

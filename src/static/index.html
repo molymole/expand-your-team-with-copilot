@@ -158,10 +158,19 @@
 
           <!-- Activities Content -->
           <div class="activities-content">
+            <div class="view-toggle" role="group" aria-label="Select activities view">
+              <button class="view-toggle-button active" data-view="cards">
+                Card View
+              </button>
+              <button class="view-toggle-button" data-view="calendar">
+                Calendar View
+              </button>
+            </div>
             <div id="activities-list">
               <!-- Activities will be loaded here -->
               <p>Loading activities...</p>
             </div>
+            <div id="calendar-view" class="hidden"></div>
             <div id="message" class="hidden message"></div>
           </div>
         </div>
